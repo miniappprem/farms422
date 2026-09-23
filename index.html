@@ -596,7 +596,7 @@ main{ padding:15px; }
 .admin-input:focus { border-color: var(--green); outline: none; }
 .admin-item { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 .admin-actions { display: flex; gap: 6px; }
-.admin-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.admin-options-grid { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 8px; margin-bottom: 10px; }
 
 @media(max-width:360px){
   .grid{ grid-template-columns:1fr; }
@@ -835,14 +835,15 @@ main{ padding:15px; }
       <label style="font-size:11px; color:var(--muted); font-weight:bold;">DESCRIPTION</label>
       <textarea id="editPDesc" class="admin-input" rows="3"></textarea>
       
-      <label style="font-size:11px; color:var(--muted); font-weight:bold;">IMAGE / VIDÉO (Fichier ou Galerie)</label>
-      <input type="file" id="editPFile" class="admin-input" accept="image/*,video/*" style="padding: 8px;">
-      <p style="font-size:10px; color:var(--danger); margin-top:-5px; margin-bottom:10px;">Obligatoire pour un nouveau produit. Optionnel pour une modification.</p>
+      <label style="font-size:11px; color:var(--muted); font-weight:bold;">LIEN DE L'IMAGE (URL)</label>
+      <input type="text" id="editPUrl" class="admin-input" placeholder="Ex: https://raw.githubusercontent.com/...">
 
-      <label style="font-size:11px; color:var(--muted); font-weight:bold;">OPTIONS (Grammes / Prix)</label>
+      <label style="font-size:11px; color:var(--muted); font-weight:bold; display:block; margin-top:10px;">OPTIONS (Grammes / Prix)</label>
       <div id="editPOptionsContainer"></div>
       
-      <div style="display:flex; gap:10px; margin-top:10px;">
+      <button id="addOptionBtn" type="button" class="admin-btn-small" style="width: 100%; margin-top: 5px; background: rgba(57, 217, 255, 0.1); border: 1px dashed var(--green); color: var(--green);">+ Ajouter une option / prix</button>
+      
+      <div style="display:flex; gap:10px; margin-top:15px;">
         <button id="saveProductBtn" class="submit" style="flex:1;">Sauvegarder</button>
         <button id="cancelEditBtn" class="submit" style="flex:1; background:var(--card2); color:var(--text); box-shadow:none;">Annuler</button>
       </div>
@@ -859,7 +860,6 @@ main{ padding:15px; }
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVEe7Z_Kpxqm41PHVQ2Yi5xhRjL_MSUes",
@@ -874,7 +874,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 // Bubbles
 function initBubbles() {
@@ -1443,7 +1442,7 @@ document.getElementById("addNewProductBtn").onclick = () => {
   document.getElementById("editPTitle").value = "";
   document.getElementById("editPCat").value = "";
   document.getElementById("editPDesc").value = "";
-  document.getElementById("editPFile").value = "";
+  document.getElementById("editPUrl").value = "";
 
   renderOptionInputs(null);
 };
@@ -1457,24 +1456,38 @@ window.prepareEditProduct = function(id) {
   document.getElementById("editPTitle").value = product.name;
   document.getElementById("editPCat").value = product.category;
   document.getElementById("editPDesc").value = product.description;
-  document.getElementById("editPFile").value = "";
+  document.getElementById("editPUrl").value = product.image || "";
 
   renderOptionInputs(product.options);
 };
 
+function createOptionRow(optName = "", optPrice = "") {
+  const div = document.createElement("div");
+  div.className = "admin-options-grid";
+  div.innerHTML = `
+    <input type="text" class="admin-input opt-name" placeholder="Ex: 5g" value="${optName}" style="margin-bottom: 0;">
+    <input type="number" class="admin-input opt-price" placeholder="Prix (€)" value="${optPrice}" style="margin-bottom: 0;">
+    <button type="button" class="admin-btn-del" style="height: 100%; padding: 0; font-size: 16px !important;" onclick="this.parentElement.remove()">X</button>
+  `;
+  return div;
+}
+
 function renderOptionInputs(options) {
   const optContainer = document.getElementById("editPOptionsContainer");
   optContainer.innerHTML = "";
-  for(let i=0; i<4; i++) {
-    const opt = (options && options[i]) ? options[i] : {name:"", price:""};
-    optContainer.innerHTML += `
-      <div class="admin-options-grid">
-        <input type="text" id="optName${i}" class="admin-input" placeholder="Ex: 5g" value="${opt.name}">
-        <input type="number" id="optPrice${i}" class="admin-input" placeholder="Prix (€)" value="${opt.price}">
-      </div>
-    `;
+  if (options && options.length > 0) {
+    options.forEach(opt => {
+      optContainer.appendChild(createOptionRow(opt.name, opt.price));
+    });
+  } else {
+    optContainer.appendChild(createOptionRow());
   }
 }
+
+document.getElementById("addOptionBtn").onclick = () => {
+  const optContainer = document.getElementById("editPOptionsContainer");
+  optContainer.appendChild(createOptionRow());
+};
 
 document.getElementById("cancelEditBtn").onclick = () => {
   document.getElementById("adminEditForm").style.display = "none";
@@ -1497,61 +1510,57 @@ window.deleteProduct = async function(id) {
 
 document.getElementById("saveProductBtn").onclick = async () => {
   const saveBtn = document.getElementById("saveProductBtn");
-  const fileInput = document.getElementById("editPFile");
-  
   const title = document.getElementById("editPTitle").value.trim();
   const category = document.getElementById("editPCat").value.trim();
   const description = document.getElementById("editPDesc").value.trim();
+  const mediaUrl = document.getElementById("editPUrl").value.trim();
 
   if(!title || !category) {
     toast("Veuillez remplir le titre et la catégorie !");
     return;
   }
 
-  if(!editingProductId && (!fileInput.files || !fileInput.files[0])) {
-    toast("Veuillez sélectionner une image ou une vidéo !");
+  if(!editingProductId && !mediaUrl) {
+    toast("Veuillez coller un lien d'image !");
     return;
   }
 
   saveBtn.textContent = "Envoi..."; saveBtn.disabled = true;
 
   const newOptions = [];
-  for(let i=0; i<4; i++){
-    const n = document.getElementById(`optName${i}`).value.trim();
-    const p = parseFloat(document.getElementById(`optPrice${i}`).value);
-    if(n && !isNaN(p)) newOptions.push({name: n, price: p});
+  const optRows = document.querySelectorAll("#editPOptionsContainer .admin-options-grid");
+  
+  optRows.forEach(row => {
+    const n = row.querySelector(".opt-name").value.trim();
+    const p = parseFloat(row.querySelector(".opt-price").value);
+    if(n && !isNaN(p)) {
+      newOptions.push({name: n, price: p});
+    }
+  });
+
+  if (newOptions.length === 0) {
+    toast("Ajoute au moins un prix !");
+    saveBtn.textContent = "Sauvegarder"; saveBtn.disabled = false;
+    return;
   }
 
   try {
-    let imageUrl = "";
-    let mediaType = "image";
-
-    if(fileInput.files && fileInput.files[0]) {
-      const file = fileInput.files[0];
-      mediaType = file.type.startsWith('video/') ? 'video' : 'image';
-      const fileRef = ref(storage, 'products/' + Date.now() + '_' + file.name);
-      
-      toast("Upload du média en cours...");
-      const snapshot = await uploadBytesResumable(fileRef, file);
-      imageUrl = await getDownloadURL(snapshot.ref);
-    }
-
     let productId = editingProductId;
     let finalData = {
       name: title,
       category: category,
       description: description,
-      options: newOptions.length ? newOptions : [{name: "Unité", price: 10}]
+      options: newOptions
     };
 
-    if(imageUrl) {
-      finalData.image = imageUrl;
-      finalData.type = mediaType;
+    if(mediaUrl) {
+      finalData.image = mediaUrl;
+      finalData.type = mediaUrl.match(/\.(mp4|webm|mov)(\?.*)?$/i) ? 'video' : 'image';
     }
 
     if(editingProductId) {
       const pIndex = PRODUCTS.findIndex(p => p.id === editingProductId);
-      if(!imageUrl && pIndex !== -1) {
+      if(!mediaUrl && pIndex !== -1) {
         finalData.image = PRODUCTS[pIndex].image;
         finalData.type = PRODUCTS[pIndex].type;
       }
