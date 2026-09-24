@@ -739,6 +739,7 @@ main{ padding:15px; }
 <div class="handle"></div>
 <button id="closeProduct" class="close">×</button>
 <img id="detailImage" class="product-detail-media" src="" alt="Produit">
+<video id="detailVideo" class="product-detail-media" src="" autoplay loop muted playsinline webkit-playsinline style="display:none;"></video>
 <div class="product-detail-body">
 <div id="detailBadge" class="detail-badge">Catégorie</div>
 <div id="detailTitle" class="detail-title">Produit</div>
@@ -940,135 +941,8 @@ document.querySelectorAll(".social").forEach(btn => {
   };
 });
 
-// Products & State (Liste complète exacte des 10 produits)
-const DEFAULT_PRODUCTS = [
-  {
-    id:"produit-1",
-    name:"JAUNE MOUSSEUX🧽",
-    category:"MOUSS🧽",
-    description:"LITTLE FARM CLICKERS🏭.",
-    image:"https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9127.jpeg",
-    options:[
-      {name:"4.5g",price:20},
-      {name:"10g",price:50},
-      {name:"25g",price:90},
-      {name:"50g",price:150},
-      {name:"100g",price:280}
-    ]
-  },
-  {
-    id:"produit-2",
-    name:"FILTRER GMO🧄🍯",
-    category:"PRODUIT🇲🇦",
-    description:"GMO PREMIUM🏭.",
-    image:"https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9128.jpeg",
-    options:[
-      {name:"5g",price:40},
-      {name:"10g",price:70},
-      {name:"25g",price:130},
-      {name:"50g",price:200},
-      {name:"100g",price:370}
-    ]
-  },
-  {
-    id:"produit-3",
-    name:"FILTRER 120u🇲🇦",
-    category:"PRODUIT🇲🇦",
-    description:"SUPREME MARROCO 120u🇲🇦🏭.",
-    image:"https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9129.jpeg",
-    options:[
-      {name:"5g",price:50},
-      {name:"10g",price:80},
-      {name:"25g",price:140},
-      {name:"50g",price:220},
-      {name:"100g",price:400}
-    ]
-  },
-  {
-    id:"produit-4",
-    name:"FROZEN VVS TANGER🥶",
-    category:"EXCLU LIMITÉ🚨",
-    description:"PROVENANCE: 🇲🇦.",
-    image:"https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9130.jpeg",
-    options:[
-      {name:"2g",price:30},
-      {name:"10g",price:120}
-    ]
-  },
-  {
-    id:"produit-5",
-    name:"CALI PLATE⭐️",
-    category:"PRODUIT🇺🇸",
-    description:"C️ALI PLATE⚡️.",
-    image:"https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9131.jpeg",
-    options:[
-      {name:"1g",price:30},
-      {name:"10g",price:260}
-    ]
-  },
-  {
-    id: "produit-6",
-    name: "BEUH CALI US🇺🇸",
-    category: "PRODUIT🇺🇸",
-    description: "P️ROVENANCE: 🇺🇸.",
-    image: "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9132.jpeg",
-    options: [
-      { name: "2g", price: 20 },
-      { name: "10g", price: 100 }
-    ]
-  },
-  {
-    id: "produit-7",
-    name: "DRY⚡️",
-    category: "PRODUIT🇺🇸",
-    description: "PREMIUM DRY SIFT/BLUESTORM/ENERGY DRY⛽️️",
-    image: "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9133.jpeg",
-    options: [
-      { name: "10g", price: 50 },
-      { name: "25g", price: 100 },
-      { name: "50g", price: 140 },
-      { name: "100g", price: 260 }
-    ]
-  },
-  {
-    id: "produit-8",
-    name: "COKE PURE 0,97❄️",
-    category: "Z️IP❄️",
-    description: "P️URE 0,97❄️ LA MEILLEURS🇨🇴.",
-    image: "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9137.jpeg",
-    options: [
-      { name: "1g", price: 50 },
-      { name: "10g", price: 370 },
-      { name: "50g", price: 1600 },
-      { name: "100g", price: 2950 }
-    ]
-  },
-  {
-    id: "produit-9",
-    name: "STICKI FINGER🍭",
-    category: "EXCLU LIMITÉ🚨",
-    description: "CANDY RAIN🍬.",
-    image: "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9176.jpeg",
-    options: [
-      { name: "2g", price: 50 },
-      { name: "5g", price: 100 },
-      { name: "10g", price: 170 }
-    ]
-  },
-  {
-    id: "produit-10",
-    name: "CARTOUCHE FR🇫🇷",
-    category: "CLOPE🚬",
-    description: "AUTHENTIQUE FR🇫🇷✅.",
-    image: "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9177.jpeg",
-    options: [
-      { name: "1 PAQUET", price: 10 },
-      { name: "1 CARTOUCHE", price: 90 }
-    ]
-  }
-];
-
-let PRODUCTS = [...DEFAULT_PRODUCTS];
+// INITIALISATION VIDE - Seulement ce qui est dans Firebase s'affichera
+let PRODUCTS = [];
 let CATEGORIES = [];
 const state = { category:"Tous", search:"", cart:{}, delivery:"meetup", selectedProduct:null, selectedOption:0 };
 
@@ -1138,10 +1012,10 @@ function renderProducts(){
   filtered.forEach(product => {
     const card = document.createElement("div");
     card.className = "product-card";
-    const firstPrice = product.options[0] ? product.options[0].price : 0;
+    const firstPrice = (product.options && product.options.length > 0) ? product.options[0].price : 0;
     
     let mediaHtml = product.type === 'video' 
-      ? `<video class="product-image" src="${product.image}" autoplay loop muted playsinline></video>`
+      ? `<video class="product-image" src="${product.image}" autoplay loop muted playsinline webkit-playsinline></video>`
       : `<img class="product-image" src="${product.image}" alt="${product.name}" loading="lazy">`;
 
     card.innerHTML = `
@@ -1170,20 +1044,20 @@ function renderProducts(){
 updateCategoriesList();
 renderProducts();
 
-// Firebase Sync
+// Firebase Sync (Nouveau comportement : Ne récupère QUE ce qui est sur Firebase)
 async function fetchProductsFromFirebase() {
   try {
     const productsCol = collection(db, "products");
     const productSnapshot = await getDocs(productsCol);
-    if (productSnapshot.empty) {
-      for(const p of DEFAULT_PRODUCTS) { await setDoc(doc(db, "products", p.id), p); }
-    } else {
+    
+    if (!productSnapshot.empty) {
       PRODUCTS = productSnapshot.docs.map(doc => doc.data());
-      updateCategoriesList();
-      renderProducts();
     }
+    
+    updateCategoriesList();
+    renderProducts();
   } catch (e) {
-    console.error("Firebase sync error :", e);
+    console.error("Erreur Firebase :", e);
   }
 }
 fetchProductsFromFirebase();
@@ -1195,7 +1069,21 @@ const productSheet = document.getElementById("productSheet");
 function openProduct(product){
   state.selectedProduct = product;
   state.selectedOption = 0;
-  document.getElementById("detailImage").src = product.image;
+  
+  const imgEl = document.getElementById("detailImage");
+  const vidEl = document.getElementById("detailVideo");
+  
+  // Affiche la vidéo ou l'image selon le type
+  if (product.type === 'video') {
+    imgEl.style.display = "none";
+    vidEl.style.display = "block";
+    vidEl.src = product.image;
+  } else {
+    vidEl.style.display = "none";
+    imgEl.style.display = "block";
+    imgEl.src = product.image;
+  }
+  
   document.getElementById("detailTitle").textContent = product.name;
   document.getElementById("detailBadge").textContent = product.category;
   document.getElementById("detailDescription").textContent = product.description;
@@ -1208,24 +1096,29 @@ function renderPriceOptions(){
   const product = state.selectedProduct;
   const container = document.getElementById("priceOptions");
   container.innerHTML = "";
-  product.options.forEach((option,index)=>{
-    const button = document.createElement("button");
-    button.className = "price-option" + (index === state.selectedOption ? " active" : "");
-    button.innerHTML = `<span class="option-name">${option.name}</span><span class="option-price">${euro(option.price)}</span>`;
-    button.onclick = () => { state.selectedOption = index; renderPriceOptions(); };
-    container.appendChild(button);
-  });
+  if (product.options) {
+    product.options.forEach((option,index)=>{
+      const button = document.createElement("button");
+      button.className = "price-option" + (index === state.selectedOption ? " active" : "");
+      button.innerHTML = `<span class="option-name">${option.name}</span><span class="option-price">${euro(option.price)}</span>`;
+      button.onclick = () => { state.selectedOption = index; renderPriceOptions(); };
+      container.appendChild(button);
+    });
+  }
 }
 
 function closeProduct(){
   productOverlay.classList.remove("open");
   productSheet.classList.remove("open");
+  // Coupe la vidéo pour ne pas entendre le son après fermeture
+  document.getElementById("detailVideo").src = "";
 }
 document.getElementById("closeProduct").onclick = closeProduct;
 productOverlay.onclick = closeProduct;
 
 // Cart & Checkout
 function addToCart(product, option){
+  if (!option) return;
   const key = product.id+"::"+option.name;
   if(state.cart[key]) state.cart[key].quantity++;
   else state.cart[key] = { key, productId:product.id, name:product.name, category:product.category, option:option.name, price:option.price, image:product.image, quantity:1, type:product.type };
@@ -1234,7 +1127,7 @@ function addToCart(product, option){
 }
 
 document.getElementById("detailAdd").onclick = () => {
-  if(!state.selectedProduct) return;
+  if(!state.selectedProduct || !state.selectedProduct.options || state.selectedProduct.options.length === 0) return;
   addToCart(state.selectedProduct, state.selectedProduct.options[state.selectedOption]);
   closeProduct();
 };
@@ -1252,7 +1145,9 @@ function updateCart(){
   items.forEach(([key,item])=>{
     const row = document.createElement("div");
     row.className = "cart-item";
-    let mediaHtml = item.type === 'video' ? `<video src="${item.image}" muted style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${item.image}" alt="">`;
+    let mediaHtml = item.type === 'video' 
+      ? `<video src="${item.image}" autoplay loop muted playsinline webkit-playsinline style="width:100%;height:100%;object-fit:cover;"></video>` 
+      : `<img src="${item.image}" alt="">`;
     row.innerHTML = `
       <div class="cart-thumb">${mediaHtml}</div>
       <div class="cart-info"><h4>${item.name}</h4><div class="cart-meta">${item.option}</div></div>
@@ -1555,7 +1450,7 @@ document.getElementById("saveProductBtn").onclick = async () => {
 
     if(mediaUrl) {
       finalData.image = mediaUrl;
-      finalData.type = mediaUrl.match(/\.(mp4|webm|mov)(\?.*)?$/i) ? 'video' : 'image';
+      finalData.type = mediaUrl.match(/\.(mp4|webm|mov)/i) ? 'video' : 'image';
     }
 
     if(editingProductId) {
