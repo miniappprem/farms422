@@ -876,6 +876,107 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
+const DEFAULT_LOGO = "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9070.jpeg";
+
+// LISTE DES NOUVEAUX PRODUITS
+const INITIAL_PRODUCTS = [
+  {
+    id: "prod_mousse_prenium",
+    name: "MOUSSE PRENIUM",
+    category: "MOUSSE PRENIUM",
+    description: "CRITICAL + 🍀 | JAUNE 🧽",
+    image: DEFAULT_LOGO,
+    type: "image",
+    options: [
+      { name: "4.5g", price: 20 },
+      { name: "10g", price: 50 },
+      { name: "25g", price: 90 },
+      { name: "50g", price: 150 },
+      { name: "100g", price: 280 }
+    ]
+  },
+  {
+    id: "prod_dry_maroc",
+    name: "DRY 🇲🇦 (pain de 50g)",
+    category: "DRY",
+    description: "LA SPÉCIAL 🍍 | DRY 🍸",
+    image: DEFAULT_LOGO,
+    type: "image",
+    options: [
+      { name: "10g", price: 60 },
+      { name: "25g", price: 100 },
+      { name: "50g", price: 160 },
+      { name: "100g", price: 300 }
+    ]
+  },
+  {
+    id: "prod_filtrer",
+    name: "FILTRER 90u",
+    category: "FILTRER",
+    description: "GMO 🧅🍯 | PREMIUM 100g 🔱 | FILTRER 🍫",
+    image: DEFAULT_LOGO,
+    type: "image",
+    options: [
+      { name: "5g", price: 40 },
+      { name: "10g", price: 70 },
+      { name: "25g", price: 130 },
+      { name: "50g", price: 200 },
+      { name: "100g", price: 370 }
+    ]
+  },
+  {
+    id: "prod_double_static",
+    name: "DOUBLE STATIC 💥🇲🇦",
+    category: "STATIC",
+    description: "🏭 : TENTAZIONE FARMS\nGRAPP GAZ 100g ⛽️ | STATIC ⚡️",
+    image: DEFAULT_LOGO,
+    type: "image",
+    options: [
+      { name: "2g", price: 30 },
+      { name: "10g", price: 140 }
+    ]
+  },
+  {
+    id: "prod_olive_frozen",
+    name: "OLIVE FROZEN 🫒🥶",
+    category: "FROZEN",
+    description: "10g OLIVE ENTIÈRE 🫒 | FROZEN 🥶",
+    image: DEFAULT_LOGO,
+    type: "image",
+    options: [
+      { name: "5g", price: 60 },
+      { name: "10g", price: 120 }
+    ]
+  },
+  {
+    id: "prod_cali_plate",
+    name: "CALI PLATE 🍇🍋",
+    category: "CALI",
+    description: "Strain : Bioco41 🍇 / Lemon 🍋\nPRODUIT 🇺🇸",
+    image: DEFAULT_LOGO,
+    type: "image",
+    options: [
+      { name: "1g", price: 30 },
+      { name: "2g", price: 50 },
+      { name: "10g", price: 250 }
+    ]
+  },
+  {
+    id: "prod_coke_pure",
+    name: "COKE PURE 0,97 ❄️",
+    category: "COKE",
+    description: "PURE 0,97 🥶 LA MEILLEURS ⭐️ | ZIP 🇨🇴",
+    image: DEFAULT_LOGO,
+    type: "image",
+    options: [
+      { name: "1g", price: 50 },
+      { name: "10g", price: 360 },
+      { name: "50g", price: 1300 },
+      { name: "100g", price: 2500 }
+    ]
+  }
+];
+
 // Bubbles
 function initBubbles() {
   const container = document.getElementById('bubbles-bg');
@@ -941,7 +1042,7 @@ document.querySelectorAll(".social").forEach(btn => {
   };
 });
 
-// INITIALISATION VIDE - Seulement ce qui est dans Firebase s'affichera
+// STATE
 let PRODUCTS = [];
 let CATEGORIES = [];
 const state = { category:"Tous", search:"", cart:{}, delivery:"meetup", selectedProduct:null, selectedOption:0 };
@@ -1025,7 +1126,7 @@ function renderProducts(){
       </div>
       <div class="product-content">
         <div class="product-name">${product.name}</div>
-        <div class="product-description">${product.description}</div>
+        <div class="product-description">${product.description.replace(/\n/g, '<br>')}</div>
         <div class="product-bottom">
           <div class="product-price">À partir de ${euro(firstPrice)}</div>
           <button class="add-button" aria-label="Ajouter">+</button>
@@ -1041,16 +1142,19 @@ function renderProducts(){
   });
 }
 
-updateCategoriesList();
-renderProducts();
-
-// Firebase Sync (Nouveau comportement : Ne récupère QUE ce qui est sur Firebase)
+// Firebase Sync
 async function fetchProductsFromFirebase() {
   try {
     const productsCol = collection(db, "products");
     const productSnapshot = await getDocs(productsCol);
     
-    if (!productSnapshot.empty) {
+    if (productSnapshot.empty) {
+      // Si la base de données est vide, on initialise les produits par défaut
+      for (const prod of INITIAL_PRODUCTS) {
+        await setDoc(doc(db, "products", prod.id), prod);
+      }
+      PRODUCTS = [...INITIAL_PRODUCTS];
+    } else {
       PRODUCTS = productSnapshot.docs.map(doc => doc.data());
     }
     
@@ -1058,6 +1162,9 @@ async function fetchProductsFromFirebase() {
     renderProducts();
   } catch (e) {
     console.error("Erreur Firebase :", e);
+    PRODUCTS = [...INITIAL_PRODUCTS];
+    updateCategoriesList();
+    renderProducts();
   }
 }
 fetchProductsFromFirebase();
@@ -1073,7 +1180,6 @@ function openProduct(product){
   const imgEl = document.getElementById("detailImage");
   const vidEl = document.getElementById("detailVideo");
   
-  // Affiche la vidéo ou l'image selon le type
   if (product.type === 'video') {
     imgEl.style.display = "none";
     vidEl.style.display = "block";
@@ -1110,7 +1216,6 @@ function renderPriceOptions(){
 function closeProduct(){
   productOverlay.classList.remove("open");
   productSheet.classList.remove("open");
-  // Coupe la vidéo pour ne pas entendre le son après fermeture
   document.getElementById("detailVideo").src = "";
 }
 document.getElementById("closeProduct").onclick = closeProduct;
@@ -1415,11 +1520,6 @@ document.getElementById("saveProductBtn").onclick = async () => {
     return;
   }
 
-  if(!editingProductId && !mediaUrl) {
-    toast("Veuillez coller un lien d'image !");
-    return;
-  }
-
   saveBtn.textContent = "Envoi..."; saveBtn.disabled = true;
 
   const newOptions = [];
@@ -1451,6 +1551,9 @@ document.getElementById("saveProductBtn").onclick = async () => {
     if(mediaUrl) {
       finalData.image = mediaUrl;
       finalData.type = mediaUrl.match(/\.(mp4|webm|mov)/i) ? 'video' : 'image';
+    } else if(!editingProductId) {
+      finalData.image = DEFAULT_LOGO;
+      finalData.type = 'image';
     }
 
     if(editingProductId) {
