@@ -1149,7 +1149,6 @@ async function fetchProductsFromFirebase() {
     const productSnapshot = await getDocs(productsCol);
     
     if (productSnapshot.empty) {
-      // Si la base de données est vide, on initialise les produits par défaut
       for (const prod of INITIAL_PRODUCTS) {
         await setDoc(doc(db, "products", prod.id), prod);
       }
@@ -1330,13 +1329,29 @@ function buildOrderMessage(){
 }
 
 document.getElementById("submitOrder").onclick = () => {
-  if(cartCount()===0){ toast("Ton panier est vide"); return; }
-  if(state.delivery==="delivery" && !document.getElementById("customerAddress").value.trim()){ toast("Indique ton adresse"); return; }
+  if (cartCount() === 0) { 
+    toast("Ton panier est vide"); 
+    return; 
+  }
+  if (state.delivery === "delivery" && !document.getElementById("customerAddress").value.trim()) { 
+    toast("Indique ton adresse"); 
+    return; 
+  }
+
   const message = buildOrderMessage();
   const telegramUrl = "https://t.me/farms422?text=" + encodeURIComponent(message);
+
+  if (tg && tg.openTelegramLink) {
+    try {
+      tg.openTelegramLink(telegramUrl);
+    } catch(e) {
+      window.location.href = telegramUrl;
+    }
+  } else {
+    window.location.href = telegramUrl;
+  }
+
   closeCheckout();
-  if(tg) { try{ tg.openTelegramLink(telegramUrl); }catch(e){ window.open(telegramUrl,"_blank"); } }
-  else { window.open(telegramUrl,"_blank"); }
   toast("Commande préparée ✓");
 };
 
