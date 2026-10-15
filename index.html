@@ -244,7 +244,7 @@ main{ padding:15px; }
 }
 
 /* =========================
-   PRODUCTS (IMAGES EN GROS PLAN / COVER)
+   PRODUCTS
 ========================= */
 .grid{ display:grid; grid-template-columns:1fr 1fr; gap:11px; }
 .product-card{
@@ -355,7 +355,7 @@ main{ padding:15px; }
 .summary-row.total span:last-child{ color:var(--green); }
 
 /* =========================
-   STYLE UNIFIÉ PREMIUM POUR LES BOUTONS
+   STYLE UNIFIÉ PREMIUM
 ========================= */
 .submit, .admin-btn-premium, .delivery-option, .admin-btn-small, .admin-btn-del {
   position: relative;
@@ -878,15 +878,15 @@ const db = getFirestore(app);
 
 const DEFAULT_LOGO = "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9070.jpeg";
 
-// LISTE DES NOUVEAUX PRODUITS
+// LISTE DES NOUVEAUX PRODUITS AVEC VRAIS LIENS ET TYPES
 const INITIAL_PRODUCTS = [
   {
     id: "prod_mousse_prenium",
-    name: "MOUSSE PRENIUM",
-    category: "MOUSSE PRENIUM",
-    description: "CRITICAL + 🍀 | JAUNE 🧽",
-    image: DEFAULT_LOGO,
-    type: "image",
+    name: "MOUSSE PRENIUM CRITICAL⭐️",
+    category: "JAUNE🧽",
+    description: "CRITICAL +🍀",
+    image: "https://www.image2url.com/r2/default/videos/1792068569719-ed843ec3-7ef5-4d04-a20b-ade0365f8cd7.mp4",
+    type: "video",
     options: [
       { name: "4.5g", price: 20 },
       { name: "10g", price: 50 },
@@ -898,9 +898,9 @@ const INITIAL_PRODUCTS = [
   {
     id: "prod_dry_maroc",
     name: "DRY 🇲🇦 (pain de 50g)",
-    category: "DRY",
-    description: "LA SPÉCIAL 🍍 | DRY 🍸",
-    image: DEFAULT_LOGO,
+    category: "DRY🍸",
+    description: "LA SPÉCIAL🍍",
+    image: "https://raw.githubusercontent.com/miniappprem/image/aae0db14f1559f3f8f577c97cad0993d0e30e72e/IMG_0562.jpeg",
     type: "image",
     options: [
       { name: "10g", price: 60 },
@@ -911,11 +911,11 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: "prod_filtrer",
-    name: "FILTRER 90u",
-    category: "FILTRER",
-    description: "GMO 🧅🍯 | PREMIUM 100g 🔱 | FILTRER 🍫",
-    image: DEFAULT_LOGO,
-    type: "image",
+    name: "FILTRER 90u GMO🧅🍯",
+    category: "FILTRER🍫",
+    description: "PREMIUM 100g🔱",
+    image: "https://www.image2url.com/r2/default/videos/1792068381220-569afd67-377f-4ca1-ab6d-26ab401012ca.mp4",
+    type: "video",
     options: [
       { name: "5g", price: 40 },
       { name: "10g", price: 70 },
@@ -927,10 +927,10 @@ const INITIAL_PRODUCTS = [
   {
     id: "prod_double_static",
     name: "DOUBLE STATIC 💥🇲🇦",
-    category: "STATIC",
-    description: "🏭 : TENTAZIONE FARMS\nGRAPP GAZ 100g ⛽️ | STATIC ⚡️",
-    image: DEFAULT_LOGO,
-    type: "image",
+    category: "STATIC⚡️",
+    description: "🏭 : TENTAZIONE FARMS\nGRAPP GAZ 100g⛽️",
+    image: "https://www.image2url.com/r2/default/videos/1792068273165-226ec0ae-3b27-48c5-bd45-9a89fff5c3fc.mp4",
+    type: "video",
     options: [
       { name: "2g", price: 30 },
       { name: "10g", price: 140 }
@@ -938,11 +938,11 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: "prod_olive_frozen",
-    name: "OLIVE FROZEN 🫒🥶",
-    category: "FROZEN",
-    description: "10g OLIVE ENTIÈRE 🫒 | FROZEN 🥶",
-    image: DEFAULT_LOGO,
-    type: "image",
+    name: "OLIVE FROZEN🫒🥶",
+    category: "FROZEN🥶",
+    description: "10g OLIVE ENTIÈRE🫒",
+    image: "https://www.image2url.com/r2/default/videos/1792068696397-e9e56096-9779-4e38-9d3d-0c34f423f39e.mp4",
+    type: "video",
     options: [
       { name: "5g", price: 60 },
       { name: "10g", price: 120 }
@@ -950,11 +950,11 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: "prod_cali_plate",
-    name: "CALI PLATE 🍇🍋",
-    category: "CALI",
-    description: "Strain : Bioco41 🍇 / Lemon 🍋\nPRODUIT 🇺🇸",
-    image: DEFAULT_LOGO,
-    type: "image",
+    name: "CALI PLATE🍇🍋",
+    category: "PRODUIT🇺🇸",
+    description: "Strain : Bioco41🍇/ Lemon🍋",
+    image: "https://www.image2url.com/r2/default/videos/1792068840500-97fbf964-2344-4474-be83-486d8e18804f.mp4",
+    type: "video",
     options: [
       { name: "1g", price: 30 },
       { name: "2g", price: 50 },
@@ -963,16 +963,28 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: "prod_coke_pure",
-    name: "COKE PURE 0,97 ❄️",
-    category: "COKE",
-    description: "PURE 0,97 🥶 LA MEILLEURS ⭐️ | ZIP 🇨🇴",
-    image: DEFAULT_LOGO,
+    name: "COKE PURE 0,97❄️",
+    category: "ZIP🇨🇴",
+    description: "PURE 0,97🥶 LA MEILLEURS⭐️",
+    image: "https://raw.githubusercontent.com/miniappprem/image/aae0db14f1559f3f8f577c97cad0993d0e30e72e/IMG_0565.jpeg",
     type: "image",
     options: [
       { name: "1g", price: 50 },
       { name: "10g", price: 360 },
       { name: "50g", price: 1300 },
       { name: "100g", price: 2500 }
+    ]
+  },
+  {
+    id: "prod_beuh_cali_us",
+    name: "BEUH CALI US🇺🇸🍀",
+    category: "BEUH🍀",
+    description: "PRODUIT🇺🇸",
+    image: "https://raw.githubusercontent.com/miniappprem/image/5a0cacaa94577d990971bdb702fae38a0dc66b16/IMG_0752.jpeg",
+    type: "image",
+    options: [
+      { name: "2g", price: 20 },
+      { name: "10g", price: 100 }
     ]
   }
 ];
@@ -1329,29 +1341,13 @@ function buildOrderMessage(){
 }
 
 document.getElementById("submitOrder").onclick = () => {
-  if (cartCount() === 0) { 
-    toast("Ton panier est vide"); 
-    return; 
-  }
-  if (state.delivery === "delivery" && !document.getElementById("customerAddress").value.trim()) { 
-    toast("Indique ton adresse"); 
-    return; 
-  }
-
+  if(cartCount()===0){ toast("Ton panier est vide"); return; }
+  if(state.delivery==="delivery" && !document.getElementById("customerAddress").value.trim()){ toast("Indique ton adresse"); return; }
   const message = buildOrderMessage();
   const telegramUrl = "https://t.me/farms422?text=" + encodeURIComponent(message);
-
-  if (tg && tg.openTelegramLink) {
-    try {
-      tg.openTelegramLink(telegramUrl);
-    } catch(e) {
-      window.location.href = telegramUrl;
-    }
-  } else {
-    window.location.href = telegramUrl;
-  }
-
   closeCheckout();
+  if(tg) { try{ tg.openTelegramLink(telegramUrl); }catch(e){ window.open(telegramUrl,"_blank"); } }
+  else { window.open(telegramUrl,"_blank"); }
   toast("Commande préparée ✓");
 };
 
