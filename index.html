@@ -14,17 +14,17 @@
 <style>
 :root{
   --bg:#070B0A;
-  --bg2:#202A2A;
-  --card:#151D1F;
-  --card2:#262D2D;
+  --bg2:#161E1D;
+  --card:#131B1D;
+  --card2:#1E2729;
   --border:#09D9FF;
   --green:#39E8FF;
   --green2:#1D748B;
   --blue:#2196ff;
   --text:#EFFDFF;
-  --muted:#E1FDFF;
+  --muted:#C3F3FF;
   --danger:#ff5c5c;
-  --radius:17px;
+  --radius:20px;
   --safe-bottom:env(safe-area-inset-bottom,0px);
 }
 
@@ -58,11 +58,47 @@ button{
 }
 
 button:active{
-  transform:scale(.97);
+  transform:scale(.96);
 }
 
 ::-webkit-scrollbar{
   display:none;
+}
+
+/* =========================
+   ANIMATION FEU (FIRE EFFECT) & GLOW iOS
+========================= */
+@keyframes fireBorderGlow {
+  0% {
+    border-color: #ff3300;
+    box-shadow: 0 0 12px rgba(255, 51, 0, 0.7), inset 0 0 8px rgba(255, 102, 0, 0.5);
+  }
+  50% {
+    border-color: #ffaa00;
+    box-shadow: 0 0 22px rgba(255, 170, 0, 0.95), inset 0 0 15px rgba(255, 51, 0, 0.7);
+  }
+  100% {
+    border-color: #ff3300;
+    box-shadow: 0 0 12px rgba(255, 51, 0, 0.7), inset 0 0 8px rgba(255, 102, 0, 0.5);
+  }
+}
+
+@keyframes fireBadgePulse {
+  0% {
+    background: linear-gradient(135deg, rgba(255, 51, 0, 0.9), rgba(255, 140, 0, 0.9));
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 100, 0, 0.8);
+  }
+  50% {
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.95), rgba(255, 210, 0, 0.95));
+    color: #031011;
+    box-shadow: 0 0 20px rgba(255, 210, 0, 1);
+  }
+  100% {
+    background: linear-gradient(135deg, rgba(255, 51, 0, 0.9), rgba(255, 140, 0, 0.9));
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 100, 0, 0.8);
+  }
 }
 
 /* =========================
@@ -105,7 +141,7 @@ button:active{
   top: 20px;
   left: 50%;
   transform: translate(-50%, -20px);
-  background: rgba(7, 11, 10, 0.95);
+  background: rgba(19, 27, 29, 0.95);
   border: 1px solid var(--green);
   padding: 6px 16px 6px 6px;
   border-radius: 30px;
@@ -116,7 +152,8 @@ button:active{
   opacity: 0;
   pointer-events: none;
   transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 .welcome-toast.show {
   opacity: 1;
@@ -130,19 +167,20 @@ button:active{
   border: 1px solid var(--green);
 }
 .welcome-toast span {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--text);
 }
 
 /* =========================
-   HEADER
+   HEADER & LOGO FEU
 ========================= */
 .top{
   position:relative;
   z-index:30;
-  padding:12px 14px 10px;
-  background:rgba(7, 10, 11, 0.94);
+  padding:14px 14px 10px;
+  background:rgba(7, 10, 11, 0.92);
+  backdrop-filter: blur(10px);
 }
 .logo{
   width:100%;
@@ -150,10 +188,11 @@ button:active{
   max-height:430px;
   object-fit:cover;
   display:block;
-  border-radius:20px;
-  border:1.5px solid var(--border);
-  box-shadow: 0 0 25px rgba(57, 208, 255, 0.14), 0 0 80px rgba(57, 198, 255, 0.05);
-  margin-bottom:13px;
+  border-radius:24px;
+  border: 2.5px solid #ff3300;
+  box-shadow: 0 0 30px rgba(255, 51, 0, 0.6), inset 0 0 15px rgba(255, 140, 0, 0.4);
+  margin-bottom:14px;
+  animation: fireBorderGlow 3s infinite ease-in-out;
 }
 
 /* =========================
@@ -161,25 +200,26 @@ button:active{
 ========================= */
 .search{
   position:relative;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 .search input{
   width:100%;
-  height:48px;
-  border-radius:14px;
-  border:1.5px solid var(--border);
+  height:50px;
+  border-radius:16px;
+  border:1.5px solid rgba(57, 232, 255, 0.4);
   background:var(--card);
   color:var(--text);
   padding:0 45px;
   outline:none;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
 }
 .search input:focus{
   border-color:var(--green);
-  box-shadow:0 0 18px rgba(57, 214, 255, 0.18);
+  box-shadow:0 0 18px rgba(57, 214, 255, 0.25), inset 0 2px 5px rgba(0,0,0,0.4);
 }
 .search-icon{
   position:absolute;
-  left:15px;
+  left:16px;
   top:50%;
   transform:translateY(-50%);
   color:var(--muted);
@@ -187,7 +227,7 @@ button:active{
 .clear-search{
   display:none;
   position:absolute;
-  right:10px;
+  right:12px;
   top:50%;
   transform:translateY(-50%);
   width:28px;
@@ -205,37 +245,38 @@ button:active{
   width:100%;
   height:52px;
   border:1.5px solid var(--green);
-  border-radius:15px;
-  background:linear-gradient(135deg, rgba(57, 219, 255, 0.16), rgba(57, 251, 255, 0.04));
+  border-radius:16px;
+  background:linear-gradient(135deg, rgba(57, 219, 255, 0.18), rgba(57, 251, 255, 0.05));
   color:var(--green);
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 16px;
   font-weight:800;
-  box-shadow:0 0 15px rgba(57, 182, 255, 0.12);
+  box-shadow:0 4px 15px rgba(0, 0, 0, 0.3), 0 0 15px rgba(57, 182, 255, 0.15);
 }
 .category-button .left{ display:flex; align-items:center; gap:10px; }
-.category-button .arrow{ transition:.2s; }
+.category-button .arrow{ transition:.25s; }
 .category-button.open .arrow{ transform:rotate(180deg); }
 .categories{
-  display:none; margin-top:8px; padding:9px; background:var(--card);
-  border:1px solid var(--border); border-radius:15px; gap:7px; flex-wrap:wrap;
+  display:none; margin-top:8px; padding:10px; background:var(--card);
+  border:1px solid rgba(57, 232, 255, 0.3); border-radius:16px; gap:8px; flex-wrap:wrap;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 .categories.open{ display:flex; }
 .category{
-  flex:1 1 calc(50% - 7px); min-height:42px; border-radius:11px;
-  border:1px solid var(--border); background:var(--bg2); color:var(--muted);
-  font-weight:800;
+  flex:1 1 calc(50% - 8px); min-height:44px; border-radius:12px;
+  border:1px solid rgba(57, 232, 255, 0.2); background:var(--bg2); color:var(--muted);
+  font-weight:800; transition: all 0.2s ease;
 }
-.category.active{ background:var(--green); color:#031011; border-color:var(--green); }
+.category.active{ background:var(--green); color:#031011; border-color:var(--green); box-shadow: 0 0 12px rgba(57, 232, 255, 0.5); }
 
 /* =========================
    MAIN
 ========================= */
 main{ padding:15px; }
 .section-title{
-  display:flex; align-items:center; gap:8px; margin:4px 0 13px;
+  display:flex; align-items:center; gap:8px; margin:4px 0 14px;
   color:var(--green); font-family:'Archivo Black',sans-serif;
   font-size:12px; letter-spacing:.13em; text-transform:uppercase;
 }
@@ -244,14 +285,18 @@ main{ padding:15px; }
 }
 
 /* =========================
-   PRODUCTS
+   PRODUCTS (BORDURE FEU)
 ========================= */
-.grid{ display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .product-card{
   position:relative; overflow:hidden; background:var(--card);
-  border:1px solid var(--border); border-radius:17px; transition:.2s;
+  border: 2px solid #ff3300; 
+  border-radius:20px; transition:.25s;
+  animation: fireBorderGlow 3s infinite ease-in-out;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
-.product-card:hover{ border-color:var(--green2); }
+.product-card:hover { transform: translateY(-3px); }
+
 .product-image-wrap{ 
   position:relative; 
   width:100%; 
@@ -264,49 +309,60 @@ main{ padding:15px; }
   height:100%; 
   object-fit: cover; 
   display:block; 
-  transition: transform 0.3s ease;
+  transition: transform 0.35s ease;
 }
 .product-card:hover .product-image {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 .product-badge{
-  position:absolute; top:9px; left:9px; padding:5px 8px; border-radius:20px;
-  background:rgba(7, 9, 11, 0.88); border:1px solid var(--green);
-  color:var(--green); font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:.04em;
+  position:absolute; top:10px; left:10px; padding:5px 10px; border-radius:20px;
+  border: 1px solid #ff9900;
+  font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:.04em;
   z-index: 2;
+  animation: fireBadgePulse 2s infinite ease-in-out;
 }
-.product-content{ padding:10px; }
-.product-name{ margin:0 0 5px; font-size:14px; font-weight:900; }
-.product-description{ color:var(--muted); font-size:11px; line-height:1.4; min-height:27px; margin-bottom:9px; }
-.product-bottom{ display:flex; align-items:center; justify-content:space-between; gap:7px; }
-.product-price{ color:var(--green); font-size:13px; font-weight:900; }
+.product-content{ padding:12px; }
+.product-name{ margin:0 0 6px; font-size:13.5px; font-weight:900; line-height:1.3; }
+.product-description{ color:var(--muted); font-size:11px; line-height:1.4; min-height:28px; margin-bottom:10px; }
+.product-bottom{ display:flex; align-items:center; justify-content:space-between; gap:6px; }
+.product-price{ color:var(--green); font-size:12.5px; font-weight:900; }
+
+/* BOUTONS STYLE iOS */
 .add-button{
-  width:32px; height:32px; border:1px solid var(--green); border-radius:10px;
-  background:rgba(57, 169, 255, 0.1); color:var(--green); font-size:20px; font-weight:700;
+  width:34px; height:34px; border:1px solid rgba(57, 232, 255, 0.4); border-radius:12px;
+  background:linear-gradient(135deg, rgba(57, 232, 255, 0.2), rgba(0, 119, 255, 0.1)); 
+  color:var(--green); font-size:20px; font-weight:700;
   display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+.add-button:active { transform: scale(0.9); background: var(--green); color: #000; }
+
 .empty{ text-align:center; color:var(--muted); padding:60px 20px; }
 .empty-icon{ font-size:40px; margin-bottom:10px; }
 
 /* =========================
-   NAV
+   NAV STYLE iOS GLASS
 ========================= */
 .bottom-nav{
   position:fixed; left:0; right:0; bottom:0; z-index:50; max-width:520px; margin:auto;
-  padding:8px 8px calc(8px + var(--safe-bottom)); background:rgba(8, 11, 13, 0.95);
-  backdrop-filter:blur(15px); border-top:1px solid var(--border); display:flex;
+  padding:10px 10px calc(10px + var(--safe-bottom)); background:rgba(8, 11, 13, 0.88);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(57, 232, 255, 0.2); display:flex;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
 }
 .nav-btn{
   flex:1; border:0; background:none; color:var(--muted); padding:6px 0;
   display:flex; flex-direction:column; align-items:center; gap:4px; font-size:11px;
-  font-weight:800; position:relative;
+  font-weight:800; position:relative; transition: 0.2s;
 }
 .nav-btn svg{ width:22px; height:22px; }
-.nav-btn.active{ color:var(--green); }
+.nav-btn.active{ color:var(--green); text-shadow: 0 0 10px rgba(57,232,255,0.5); }
 .badge{
-  position:absolute; top:0; right:20%; min-width:16px; height:16px; padding:0 4px;
+  position:absolute; top:0; right:20%; min-width:18px; height:18px; padding:0 5px;
   display:none; align-items:center; justify-content:center; background:var(--danger);
-  color:#FFFFFF; border-radius:20px; font-size:10px;
+  color:#FFFFFF; border-radius:20px; font-size:10px; font-weight:900;
+  box-shadow: 0 0 10px rgba(255,92,92,0.8);
 }
 
 /* =========================
@@ -317,7 +373,7 @@ main{ padding:15px; }
   width:100%; max-width:430px; min-height:48px; display:flex; align-items:center; justify-content:center; gap:7px;
   padding:11px 18px; border-radius:30px; text-decoration:none; color:#FFFFFF; font-size:12px; font-weight:900;
   letter-spacing:.04em; background:linear-gradient(135deg, rgba(0, 119, 255, 0.3), rgba(33, 150, 243, 0.1));
-  border:1px solid rgba(33,150,255,.85); box-shadow:0 0 8px rgba(0,119,255,.75), 0 0 22px rgba(0,119,255,.45), inset 0 0 12px rgba(33, 150, 243, 0.12);
+  border:1px solid rgba(33,150,255,.85); box-shadow:0 0 12px rgba(0,119,255,.6), inset 0 0 12px rgba(33, 150, 243, 0.15);
 }
 .developer-blue{ color:#2196ff; }
 .verified-blue{
@@ -330,134 +386,151 @@ main{ padding:15px; }
 ========================= */
 .view{ display:none; }
 .view.active{ display:block; }
-.page-title{ font-family:'Archivo Black',sans-serif; font-size:23px; margin-bottom:17px; }
+.page-title{ font-family:'Archivo Black',sans-serif; font-size:24px; margin-bottom:18px; color:var(--text); }
 
 .cart-item{
-  display:flex; align-items:center; gap:10px; padding:11px; margin-bottom:9px;
-  border:1px solid var(--border); background:var(--card); border-radius:14px;
+  display:flex; align-items:center; gap:12px; padding:12px; margin-bottom:10px;
+  border:1px solid rgba(57, 232, 255, 0.25); background:var(--card); border-radius:16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 .cart-thumb{
-  width:52px; height:52px; flex:0 0 52px; display:flex; align-items:center; justify-content:center;
-  border-radius:11px; background:var(--bg2); overflow:hidden;
+  width:54px; height:54px; flex:0 0 54px; display:flex; align-items:center; justify-content:center;
+  border-radius:12px; background:var(--bg2); overflow:hidden; border: 1px solid rgba(57, 232, 255, 0.2);
 }
 .cart-thumb img, .cart-thumb video{ width:100%; height:100%; object-fit:cover; }
 .cart-info{ flex:1; min-width:0; }
-.cart-info h4{ margin:0 0 4px; font-size:13px; }
+.cart-info h4{ margin:0 0 4px; font-size:13.5px; font-weight:800; }
 .cart-meta{ color:var(--muted); font-size:11px; }
 .cart-right{ text-align:right; }
-.cart-price{ color:var(--green); font-size:13px; font-weight:800; margin-bottom:5px; }
+.cart-price{ color:var(--green); font-size:13px; font-weight:900; margin-bottom:6px; }
 .qty{ display:flex; align-items:center; justify-content:flex-end; gap:6px; }
-.qty button{ width:24px; height:24px; border:1px solid var(--border); border-radius:6px; background:var(--card2); color:var(--green); font-size:16px; }
-.qty span{ min-width:15px; text-align:center; font-size:12px; font-weight:800; }
-.summary{ margin-top:15px; padding:15px; background:var(--card); border:1px solid var(--green2); border-radius:16px; }
-.summary-row{ display:flex; justify-content:space-between; color:var(--muted); font-size:13px; margin-bottom:8px; }
-.summary-row.total{ padding-top:10px; border-top:1px solid var(--border); color:var(--text); font-size:16px; font-weight:800; }
+.qty button{ width:26px; height:26px; border:1px solid rgba(57, 232, 255, 0.3); border-radius:8px; background:var(--card2); color:var(--green); font-size:16px; font-weight: bold; }
+.qty span{ min-width:18px; text-align:center; font-size:12.5px; font-weight:900; }
+.summary{ margin-top:16px; padding:16px; background:var(--card); border:1px solid var(--green2); border-radius:18px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+.summary-row{ display:flex; justify-content:space-between; color:var(--muted); font-size:13px; margin-bottom:9px; }
+.summary-row.total{ padding-top:12px; border-top:1px solid rgba(57,232,255,0.2); color:var(--text); font-size:16px; font-weight:900; }
 .summary-row.total span:last-child{ color:var(--green); }
 
 /* =========================
-   STYLE UNIFIÉ PREMIUM
+   BOUTONS STYLE iOS PREMIUM
 ========================= */
-.submit, .admin-btn-premium, .delivery-option, .admin-btn-small, .admin-btn-del {
+.submit, .admin-btn-premium, .delivery-option, .admin-btn-small, .admin-btn-del, .checkout-action-btn {
   position: relative;
-  border-radius: 14px;
+  border-radius: 16px;
   font-weight: 900;
-  letter-spacing: .05em;
+  letter-spacing: .04em;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  transition: all .25s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
   text-transform: uppercase;
 }
 
 .submit, .admin-btn-premium, .admin-btn-small {
   width: 100%;
-  height: 50px;
-  background: linear-gradient(135deg, rgba(21, 29, 31, 0.95), rgba(7, 11, 10, 0.98));
+  height: 52px;
+  background: linear-gradient(135deg, rgba(21, 29, 31, 0.96), rgba(9, 15, 17, 0.98));
   border: 1px solid var(--border);
   color: var(--green);
   box-shadow: 
-    0 8px 20px rgba(0, 0, 0, 0.4),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-    0 0 12px rgba(57, 217, 255, 0.15);
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    0 0 15px rgba(57, 232, 255, 0.2);
 }
 .submit:hover, .admin-btn-premium:hover {
   border-color: var(--green);
-  box-shadow: 0 0 20px rgba(57, 217, 255, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.8);
-  transform: translateY(-1px);
+  box-shadow: 0 0 22px rgba(57, 232, 255, 0.45), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
 }
-
-.submit::before, .admin-btn-premium::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: skewX(-25deg);
-  animation: shineReflect 5s infinite;
-}
-@keyframes shineReflect {
-  0% { left: -150%; }
-  25% { left: 150%; }
-  100% { left: 150%; }
+.submit:active, .admin-btn-premium:active {
+  transform: scale(0.96);
 }
 
 .admin-btn-small {
-  height: 38px;
+  height: 40px;
   font-size: 12px !important;
-  padding: 0 14px;
+  padding: 0 16px;
   width: auto;
 }
 .admin-btn-del {
-  height: 38px;
+  height: 40px;
   font-size: 12px !important;
-  padding: 0 14px;
+  padding: 0 16px;
   width: auto;
-  background: linear-gradient(135deg, rgba(255, 92, 92, 0.2), rgba(7, 11, 10, 0.95));
+  background: linear-gradient(135deg, rgba(255, 92, 92, 0.25), rgba(7, 11, 10, 0.95));
   border: 1px solid var(--danger);
   color: var(--danger);
 }
 
-.delivery-options{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:16px 0; }
+.delivery-options{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
 .delivery-option{
-  height: 48px;
+  height: 50px;
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(57, 232, 255, 0.3);
   color: var(--text);
-  font-size: 12px;
+  font-size: 12.5px;
 }
 .delivery-option.active{
   border-color: var(--green);
-  background: rgba(57, 253, 255, 0.1);
+  background: rgba(57, 232, 255, 0.15);
   color: var(--green);
-  box-shadow: 0 0 15px rgba(57, 217, 255, 0.2);
+  box-shadow: 0 0 18px rgba(57, 232, 255, 0.3);
 }
 
-.info-card{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:11px; }
+.checkout-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 15px;
+}
+.checkout-action-btn {
+  height: 54px;
+  font-size: 12px !important;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+.checkout-action-btn.tg {
+  border-color: #2196ff;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(7, 11, 10, 0.95));
+  color: #2196ff;
+}
+.checkout-action-btn.ig {
+  border-color: #ff2a8d;
+  background: linear-gradient(135deg, rgba(255, 42, 141, 0.2), rgba(7, 11, 10, 0.95));
+  color: #ff66b2;
+}
+
+.info-card{ background:var(--card); border:1px solid rgba(57, 232, 255, 0.25); border-radius:18px; padding:16px; margin-bottom:12px; box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
 .info-card h3{ margin:0 0 8px; color:var(--green); font-size:15px; }
 .info-card p{ margin:0; color:var(--muted); line-height:1.55; font-size:13px; }
-.socials{ display:flex; flex-direction:column; gap:9px; margin-top:12px; }
+.socials{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
 .social{
-  display:flex; align-items:center; gap:12px; padding:13px; border-radius:14px; border:1px solid var(--border);
+  display:flex; align-items:center; gap:12px; padding:13px; border-radius:16px; border:1px solid rgba(57, 232, 255, 0.25);
   background:var(--card); color:var(--text); text-decoration:none; font-weight:800; font-size:13px; width: 100%; text-align: left;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: 0.2s;
 }
+.social:active { transform: scale(0.98); }
 .social-icon{
-  width:39px; height:39px; display:flex; align-items:center; justify-content:center; flex:0 0 39px;
-  border-radius:11px; background:var(--green); color:#030D11; overflow:hidden;
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center; flex:0 0 40px;
+  border-radius:12px; background:var(--green); color:#030D11; overflow:hidden;
+  border: 1px solid rgba(255,255,255,0.3);
 }
 .social-icon img{ width:100%; height:100%; object-fit:cover; }
 
 .profile{ text-align:center; padding:10px 0 20px; }
-.avatar{ width:82px; height:82px; margin:auto; border-radius:50%; border:2px solid var(--green); overflow:hidden; box-shadow:0 0 25px rgba(57, 200, 255, 0.3); }
+.avatar{ width:86px; height:86px; margin:auto; border-radius:50%; border:2.5px solid var(--green); overflow:hidden; box-shadow:0 0 25px rgba(57, 200, 255, 0.4); }
 .avatar img{ width:100%; height:100%; object-fit:cover; }
-.profile-name{ margin-top:10px; font-family:'Archivo Black',sans-serif; font-size:19px; }
+.profile-name{ margin-top:12px; font-family:'Archivo Black',sans-serif; font-size:20px; }
 .profile-sub{ margin-top:4px; color:var(--muted); font-size:12px; }
-.profile-row{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px; background:var(--card); border:1px solid var(--border); border-radius:13px; margin-bottom:8px; font-size:13px; font-weight:700; }
+.profile-row{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px; background:var(--card); border:1px solid rgba(57, 232, 255, 0.2); border-radius:15px; margin-bottom:9px; font-size:13px; font-weight:700; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
 /* =========================
    MODAL CODE PIN PREMIUM
@@ -537,65 +610,124 @@ main{ padding:15px; }
 /* =========================
    CHECKOUT & OVERLAYS
 ========================= */
-.overlay{ position:fixed; inset:0; z-index:80; background:rgba(0, 0, 0, 0.75); opacity:0; pointer-events:none; transition:.2s; backdrop-filter: blur(4px); }
+.overlay{ position:fixed; inset:0; z-index:80; background:rgba(0, 0, 0, 0.75); opacity:0; pointer-events:none; transition:.25s; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .overlay.open{ opacity:1; pointer-events:auto; }
 .sheet{
-  position:fixed; z-index:81; left:0; right:0; bottom:0; max-width:520px; margin:auto; max-height:90vh; overflow:auto;
-  background:var(--bg2); border:1px solid var(--border); border-bottom:0; border-radius:24px 24px 0 0; transform:translateY(100%); transition:.28s; padding-bottom:calc(22px + var(--safe-bottom));
+  position:fixed; z-index:81; left:0; right:0; bottom:0; max-width:520px; margin:auto; max-height:92vh; overflow:auto;
+  background:var(--bg2); border:1px solid rgba(57, 232, 255, 0.3); border-bottom:0; border-radius:26px 26px 0 0; transform:translateY(100%); transition:.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding-bottom:calc(24px + var(--safe-bottom));
+  box-shadow: 0 -15px 40px rgba(0,0,0,0.6);
 }
 .sheet.open{ transform:translateY(0); }
-.handle{ width:38px; height:4px; background:var(--border); border-radius:5px; margin:10px auto; }
-.close{ position:absolute; right:14px; top:12px; width:31px; height:31px; border-radius:50%; border:1px solid var(--border); background:rgba(0, 0, 0, 0.5); color:#fff; }
-.sheet-body{ padding:12px 16px; }
-.sheet h2{ font-family:'Archivo Black',sans-serif; font-size:21px; margin:9px 0; }
+.handle{ width:40px; height:4.5px; background:rgba(57, 232, 255, 0.4); border-radius:5px; margin:12px auto; }
+.close{ position:absolute; right:16px; top:14px; width:32px; height:32px; border-radius:50%; border:1px solid rgba(57, 232, 255, 0.3); background:rgba(0, 0, 0, 0.6); color:#fff; display:flex; align-items:center; justify-content:center; }
+.sheet-body{ padding:14px 18px; }
+.sheet h2{ font-family:'Archivo Black',sans-serif; font-size:22px; margin:10px 0; }
 .sheet-description{ color:var(--muted); font-size:13px; line-height:1.55; }
 
-.address-wrap{ display:none; margin-bottom:12px; }
+.address-wrap{ display:none; margin-bottom:14px; }
 .address-wrap.visible{ display:block; }
-.address-wrap label{ display:block; color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; margin-bottom:5px; }
-.address-wrap textarea{ width:100%; min-height:90px; background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:12px; outline:none; resize:none; }
+.address-wrap label{ display:block; color:var(--muted); font-size:11px; font-weight:900; text-transform:uppercase; margin-bottom:6px; }
+.address-wrap textarea{ width:100%; min-height:95px; background:var(--card); color:var(--text); border:1px solid rgba(57, 232, 255, 0.3); border-radius:14px; padding:12px; outline:none; resize:none; }
 .address-wrap textarea:focus{ border-color:var(--green); }
-.order-summary{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:12px; font-size:12px; line-height:1.6; color:var(--muted); }
+.order-summary{ background:var(--card); border:1px solid rgba(57, 232, 255, 0.25); border-radius:16px; padding:14px; margin-bottom:14px; font-size:12.5px; line-height:1.6; color:var(--muted); box-shadow: inset 0 2px 6px rgba(0,0,0,0.4); }
 .order-summary strong{ color:var(--text); }
 
 /* =========================
-   PRODUCT MODAL
+   PRODUCT MODAL & SLIDER MULTI-VIDÉOS
 ========================= */
-.product-overlay{ position:fixed; inset:0; z-index:90; background:rgba(0, 0, 0, 0.75); opacity:0; pointer-events:none; transition:.2s; }
+.product-overlay{ position:fixed; inset:0; z-index:90; background:rgba(0, 0, 0, 0.75); opacity:0; pointer-events:none; transition:.25s; }
 .product-overlay.open{ opacity:1; pointer-events:auto; }
 .product-sheet{
   position:fixed; z-index:91; left:0; right:0; bottom:0; max-width:520px; max-height:94vh; margin:auto; overflow:auto;
-  background:var(--bg2); border:1px solid var(--border); border-bottom:0; border-radius:24px 24px 0 0; transform:translateY(100%); transition:.28s; padding-bottom:calc(22px + var(--safe-bottom));
+  background:var(--bg2); border:1px solid rgba(57, 232, 255, 0.3); border-bottom:0; border-radius:26px 26px 0 0; transform:translateY(100%); transition:.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding-bottom:calc(24px + var(--safe-bottom));
+  box-shadow: 0 -15px 40px rgba(0,0,0,0.6);
 }
 .product-sheet.open{ transform:translateY(0); }
-.product-detail-media{ width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:20px 20px 0 0; background:#030809; }
-.product-detail-body{ padding:15px; }
-.detail-badge{ display:inline-block; padding:6px 10px; border-radius:20px; background:rgba(57, 200, 255, 0.1); color:var(--green); border:1px solid var(--green2); font-size:10px; font-weight:900; text-transform:uppercase; }
-.detail-title{ font-family:'Archivo Black',sans-serif; font-size:23px; margin:10px 0 7px; }
+
+/* Conteneur principal englobant l'image/vidéo et positionnant les points de défilement en bas du média */
+.media-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: #030809;
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+}
+
+.media-slider-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.media-slide-item {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  position: relative;
+}
+.product-detail-media{ width:100%; height:100%; object-fit:cover; display:block; background:#030809; }
+
+/* Indicateurs de défilement (dots) positionnés EN BAS DU MÉDIA */
+.media-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+  background: rgba(0,0,0,0.6);
+  padding: 5px 10px;
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.media-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  transition: 0.25s;
+}
+.media-dot.active {
+  background: var(--green);
+  width: 18px;
+  border-radius: 4px;
+}
+
+.product-detail-body{ padding:16px; }
+.detail-badge{ display:inline-block; padding:6px 12px; border-radius:20px; background:rgba(57, 200, 255, 0.12); color:var(--green); border:1px solid var(--green2); font-size:10.5px; font-weight:900; text-transform:uppercase; }
+.detail-title{ font-family:'Archivo Black',sans-serif; font-size:22px; margin:10px 0 8px; }
 .detail-description{ color:var(--muted); font-size:13px; line-height:1.6; margin-bottom:16px; }
 .options-title{ color:var(--text); font-size:13px; font-weight:900; margin-bottom:8px; }
-.price-options{ display:flex; flex-direction:column; gap:8px; margin-bottom:13px; }
-.price-option{ width:100%; display:flex; align-items:center; justify-content:space-between; padding:13px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--text); text-align:left; cursor: pointer; }
-.price-option.active{ border-color:var(--green); background:rgba(57, 222, 255, 0.09); }
-.option-name{ font-size:12px; font-weight:800; }
-.option-price{ color:var(--green); font-size:13px; font-weight:900; }
+.price-options{ display:flex; flex-direction:column; gap:9px; margin-bottom:15px; }
+.price-option{ width:100%; display:flex; align-items:center; justify-content:space-between; padding:14px; border-radius:14px; border:1px solid rgba(57, 232, 255, 0.25); background:var(--card); color:var(--text); text-align:left; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.2s; }
+.price-option.active{ border-color:var(--green); background:rgba(57, 232, 255, 0.12); box-shadow: 0 0 15px rgba(57, 232, 255, 0.25); }
+.option-name{ font-size:12.5px; font-weight:800; }
+.option-price{ color:var(--green); font-size:13.5px; font-weight:900; }
 
 /* =========================
    TOAST
 ========================= */
 .toast{
   position:fixed; z-index:100; left:50%; bottom:100px; transform:translate(-50%,20px); background:var(--green); color:#030E11;
-  padding:11px 18px; border-radius:30px; font-size:13px; font-weight:900; opacity:0; pointer-events:none; transition:.25s; white-space:nowrap;
+  padding:12px 20px; border-radius:30px; font-size:13px; font-weight:900; opacity:0; pointer-events:none; transition:.25s; white-space:nowrap;
+  box-shadow: 0 10px 25px rgba(57, 232, 255, 0.4);
 }
 .toast.show{ opacity:1; transform:translate(-50%,0); }
 
 /* =========================
    ADMIN PANEL STYLES
 ========================= */
-.admin-input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; margin-bottom: 10px; }
+.admin-input { width: 100%; background: var(--bg); border: 1px solid rgba(57, 232, 255, 0.3); color: var(--text); padding: 12px; border-radius: 14px; margin-bottom: 10px; }
 .admin-input:focus { border-color: var(--green); outline: none; }
-.admin-item { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-.admin-actions { display: flex; gap: 6px; }
+.admin-item { background: var(--card); border: 1px solid rgba(57, 232, 255, 0.25); padding: 14px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.admin-actions { display: flex; gap: 8px; }
 .admin-options-grid { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 8px; margin-bottom: 10px; }
 
 @media(max-width:360px){
@@ -619,7 +751,7 @@ main{ padding:15px; }
 ========================= -->
 <section id="view-shop" class="view active">
 <header class="top">
-<img class="logo" src="https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9070.jpeg" alt="Logo FARMS422">
+<img class="logo" src="https://raw.githubusercontent.com/miniappprem/image/fdd11d1c4613122dad41974fed85d1d8bd49460c/IMG_1032.jpeg" alt="Logo FARMS422">
 <div class="search">
 <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -676,7 +808,7 @@ main{ padding:15px; }
 <div class="socials">
 <button class="social" data-url="https://tutuduanyu.org"><span class="social-icon"><img src="https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9160.png" alt="WhatsApp"></span><span>WhatsApp</span></button>
 <button class="social" data-url="https://t.me/+bfgNCesULJ84OTA8"><span class="social-icon"><img src="https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_8963.webp" alt="Telegram"></span><span>Telegram</span></button>
-<button class="social" data-url="https://invite.viber.com"><span class="social-icon"><img src="https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9161.jpeg" alt="Instagram"></span><span>Instagram</span></button>
+<button class="social" data-url="https://www.instagram.com/farms422.st?srtk=Y3VxZmgwNWVpYnc5"><span class="social-icon"><img src="https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9161.jpeg" alt="Instagram"></span><span>Instagram</span></button>
 </div>
 </div>
 </main>
@@ -732,14 +864,19 @@ main{ padding:15px; }
 
 
 <!-- =========================
-     PRODUCT MODAL
+     PRODUCT MODAL & SLIDER MULTI-VIDÉOS
 ========================= -->
 <div id="productOverlay" class="product-overlay"></div>
 <div id="productSheet" class="product-sheet">
 <div class="handle"></div>
 <button id="closeProduct" class="close">×</button>
-<img id="detailImage" class="product-detail-media" src="" alt="Produit">
-<video id="detailVideo" class="product-detail-media" src="" autoplay loop muted playsinline webkit-playsinline style="display:none;"></video>
+
+<!-- WRAPPER INTÉGRÉ SOUS LE MEDIA -->
+<div class="media-wrapper">
+  <div id="detailMediaContainer" class="media-slider-container"></div>
+  <div id="mediaDots" class="media-dots"></div>
+</div>
+
 <div class="product-detail-body">
 <div id="detailBadge" class="detail-badge">Catégorie</div>
 <div id="detailTitle" class="detail-title">Produit</div>
@@ -752,7 +889,7 @@ main{ padding:15px; }
 
 
 <!-- =========================
-     CHECKOUT
+     CHECKOUT (TELEGRAM OU INSTAGRAM)
 ========================= -->
 <div id="checkoutOverlay" class="overlay"></div>
 <div id="checkoutSheet" class="sheet">
@@ -760,7 +897,7 @@ main{ padding:15px; }
 <button id="closeCheckout" class="close">×</button>
 <div class="sheet-body">
 <h2>Finaliser la commande</h2>
-<p class="sheet-description">Choisis ton mode de réception.</p>
+<p class="sheet-description">Choisis ton mode de réception et ta plateforme d'envoi.</p>
 <div class="delivery-options">
 <button class="delivery-option active" data-delivery="meetup">🏢 Meet-up</button>
 <button class="delivery-option" data-delivery="delivery">🚚 Livraison</button>
@@ -770,7 +907,12 @@ main{ padding:15px; }
 <textarea id="customerAddress" placeholder="Indique ton adresse complète..."></textarea>
 </div>
 <div id="orderSummary" class="order-summary"></div>
-<button id="submitOrder" class="submit">Envoyer la commande à @farms422</button>
+
+<div class="checkout-actions-grid">
+  <button id="submitOrderTg" class="checkout-action-btn tg">💬 Envoyer sur Telegram</button>
+  <button id="submitOrderIg" class="checkout-action-btn ig">📸 Envoyer sur Instagram</button>
+</div>
+
 </div>
 </div>
 
@@ -814,7 +956,7 @@ main{ padding:15px; }
      ADMIN DASHBOARD
 ========================= -->
 <div id="adminDashOverlay" class="overlay"></div>
-<div id="adminDashSheet" class="sheet" style="max-height: 90vh;">
+<div id="adminDashSheet" class="sheet" style="max-height: 92vh;">
   <div class="handle"></div>
   <button id="closeAdminDash" class="close">×</button>
   <div class="sheet-body">
@@ -824,7 +966,7 @@ main{ padding:15px; }
     </div>
     <p class="sheet-description" style="margin-bottom:15px;">Gérez, ajoutez ou supprimez vos produits directement en ligne.</p>
     
-    <div id="adminEditForm" style="display: none; background: var(--card); padding:15px; border-radius:15px; border: 1px solid var(--green); margin-bottom: 20px;">
+    <div id="adminEditForm" style="display: none; background: var(--card); padding:15px; border-radius:18px; border: 1px solid var(--green); margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.4);">
       <h3 id="formModeTitle" style="margin-top:0; color:var(--green); font-size: 16px;">Modifier Produit</h3>
       
       <label style="font-size:11px; color:var(--muted); font-weight:bold;">TITRE</label>
@@ -836,8 +978,8 @@ main{ padding:15px; }
       <label style="font-size:11px; color:var(--muted); font-weight:bold;">DESCRIPTION</label>
       <textarea id="editPDesc" class="admin-input" rows="3"></textarea>
       
-      <label style="font-size:11px; color:var(--muted); font-weight:bold;">LIEN DE L'IMAGE (URL)</label>
-      <input type="text" id="editPUrl" class="admin-input" placeholder="Ex: https://raw.githubusercontent.com/...">
+      <label style="font-size:11px; color:var(--muted); font-weight:bold;">LIEN(S) MÉDIA (Séparés par des virgules si plusieurs)</label>
+      <input type="text" id="editPUrl" class="admin-input" placeholder="Ex: https://..., https://...">
 
       <label style="font-size:11px; color:var(--muted); font-weight:bold; display:block; margin-top:10px;">OPTIONS (Grammes / Prix)</label>
       <div id="editPOptionsContainer"></div>
@@ -878,17 +1020,17 @@ const db = getFirestore(app);
 
 const DEFAULT_LOGO = "https://raw.githubusercontent.com/skdesignshop/photo-image-/refs/heads/main/IMG_9070.jpeg";
 
-// LISTE DES NOUVEAUX PRODUITS AVEC VRAIS LIENS ET TYPES
 const INITIAL_PRODUCTS = [
   {
-    id: "prod_mousse_prenium",
-    name: "MOUSSE PRENIUM CRITICAL⭐️",
+    id: "prod_mousse_critical",
+    name: "MOUSSE SPÉ CRITICAL⭐️",
     category: "JAUNE🧽",
     description: "CRITICAL +🍀",
-    image: "https://www.image2url.com/r2/default/videos/1792068569719-ed843ec3-7ef5-4d04-a20b-ade0365f8cd7.mp4",
-    type: "video",
+    mediaUrls: [
+      "https://www.image2url.com/r2/default/videos/1792504172552-47c650cc-214a-4019-b3cf-19afbee029d9.mp4"
+    ],
     options: [
-      { name: "4.5g", price: 20 },
+      { name: "4,5g", price: 20 },
       { name: "10g", price: 50 },
       { name: "25g", price: 90 },
       { name: "50g", price: 150 },
@@ -896,95 +1038,93 @@ const INITIAL_PRODUCTS = [
     ]
   },
   {
-    id: "prod_dry_maroc",
-    name: "DRY 🇲🇦 (pain de 50g)",
-    category: "DRY🍸",
-    description: "LA SPÉCIAL🍍",
-    image: "https://raw.githubusercontent.com/miniappprem/image/aae0db14f1559f3f8f577c97cad0993d0e30e72e/IMG_0562.jpeg",
-    type: "image",
-    options: [
-      { name: "10g", price: 60 },
-      { name: "25g", price: 100 },
-      { name: "50g", price: 160 },
-      { name: "100g", price: 300 }
-    ]
-  },
-  {
-    id: "prod_filtrer",
-    name: "FILTRER 90u GMO🧅🍯",
-    category: "FILTRER🍫",
-    description: "PREMIUM 100g🔱",
-    image: "https://www.image2url.com/r2/default/videos/1792068381220-569afd67-377f-4ca1-ab6d-26ab401012ca.mp4",
-    type: "video",
-    options: [
-      { name: "5g", price: 40 },
-      { name: "10g", price: 70 },
-      { name: "25g", price: 130 },
-      { name: "50g", price: 200 },
-      { name: "100g", price: 370 }
-    ]
-  },
-  {
-    id: "prod_double_static",
-    name: "DOUBLE STATIC 💥🇲🇦",
-    category: "STATIC⚡️",
-    description: "🏭 : TENTAZIONE FARMS\nGRAPP GAZ 100g⛽️",
-    image: "https://www.image2url.com/r2/default/videos/1792068273165-226ec0ae-3b27-48c5-bd45-9a89fff5c3fc.mp4",
-    type: "video",
-    options: [
-      { name: "2g", price: 30 },
-      { name: "10g", price: 140 }
-    ]
-  },
-  {
     id: "prod_olive_frozen",
     name: "OLIVE FROZEN🫒🥶",
     category: "FROZEN🥶",
     description: "10g OLIVE ENTIÈRE🫒",
-    image: "https://www.image2url.com/r2/default/videos/1792068696397-e9e56096-9779-4e38-9d3d-0c34f423f39e.mp4",
-    type: "video",
+    mediaUrls: [
+      "https://www.image2url.com/r2/default/videos/1792068696397-e9e56096-9779-4e38-9d3d-0c34f423f39e.mp4",
+      "https://www.image2url.com/r2/default/videos/1792504521683-966833a0-4cde-46d0-b966-f8e5ec4a910f.mp4"
+    ],
     options: [
       { name: "5g", price: 60 },
       { name: "10g", price: 120 }
     ]
   },
   {
-    id: "prod_cali_plate",
-    name: "CALI PLATE🍇🍋",
-    category: "PRODUIT🇺🇸",
-    description: "Strain : Bioco41🍇/ Lemon🍋",
-    image: "https://www.image2url.com/r2/default/videos/1792068840500-97fbf964-2344-4474-be83-486d8e18804f.mp4",
-    type: "video",
-    options: [
-      { name: "1g", price: 30 },
-      { name: "2g", price: 50 },
-      { name: "10g", price: 250 }
-    ]
-  },
-  {
-    id: "prod_coke_pure",
-    name: "COKE PURE 0,97❄️",
+    id: "prod_coke_medelin",
+    name: "COKE MEDELIN 0,9❄️",
     category: "ZIP🇨🇴",
-    description: "PURE 0,97🥶 LA MEILLEURS⭐️",
-    image: "https://raw.githubusercontent.com/miniappprem/image/aae0db14f1559f3f8f577c97cad0993d0e30e72e/IMG_0565.jpeg",
-    type: "image",
+    description: "LA MEILLEURS⭐️",
+    mediaUrls: [
+      "https://www.image2url.com/r2/default/videos/1792539610414-51505adb-d445-43be-b912-cd6dc269638c.mov",
+      "https://www.image2url.com/r2/default/videos/1792505500824-24460552-7ab2-4b25-9e69-12708f2acb9c.mov"
+    ],
     options: [
       { name: "1g", price: 50 },
-      { name: "10g", price: 360 },
-      { name: "50g", price: 1300 },
-      { name: "100g", price: 2500 }
+      { name: "5g", price: 220 },
+      { name: "10g", price: 350 },
+      { name: "50g", price: 1200 },
+      { name: "100g", price: 2300 }
     ]
   },
   {
-    id: "prod_beuh_cali_us",
-    name: "BEUH CALI US🇺🇸🍀",
+    id: "prod_beuh_cali",
+    name: "BEUH CALI US TROPICANA🇺🇸🍀",
     category: "BEUH🍀",
     description: "PRODUIT🇺🇸",
-    image: "https://raw.githubusercontent.com/miniappprem/image/5a0cacaa94577d990971bdb702fae38a0dc66b16/IMG_0752.jpeg",
-    type: "image",
+    mediaUrls: [
+      "https://raw.githubusercontent.com/miniappprem/image/5a0cacaa94577d990971bdb702fae38a0dc66b16/IMG_0752.jpeg",
+      "https://www.image2url.com/r2/default/videos/1792539554794-0bdacb11-4bca-4e1a-900b-910b749d6f2e.mp4"
+    ],
     options: [
       { name: "2g", price: 20 },
-      { name: "10g", price: 100 }
+      { name: "4g", price: 40 },
+      { name: "6g", price: 60 },
+      { name: "10g", price: 100 },
+      { name: "20g", price: 180 }
+    ]
+  },
+  {
+    id: "prod_filtrer_90u",
+    name: "FILTRER 90u 🍫",
+    category: "FILTRER🍫",
+    description: "NO FARM🏭",
+    mediaUrls: [
+      "https://www.image2url.com/r2/default/videos/1792504412996-2ee4adff-7dfb-44e2-b8da-6e02f910daba.mp4"
+    ],
+    options: [
+      { name: "5g", price: 40 },
+      { name: "10g", price: 70 },
+      { name: "25g", price: 130 },
+      { name: "50g", price: 200 },
+      { name: "100g", price: 380 }
+    ]
+  },
+  {
+    id: "prod_static_samurai",
+    name: "STATIC SAMURAÏ SHIFT US🥷🇺🇸",
+    category: "STATIC⚡️",
+    description: "PRODUIT🇺🇸",
+    mediaUrls: [
+      "https://www.image2url.com/r2/default/videos/1792504960822-79d0eb67-b01b-45ec-b8fd-3b291e041de5.mp4"
+    ],
+    options: [
+      { name: "1g", price: 40 },
+      { name: "3g", price: 100 },
+      { name: "10g", price: 300 }
+    ]
+  },
+  {
+    id: "prod_sahas_terps",
+    name: "SAHAS TERPS 2026/2027 US🇺🇸",
+    category: "FILTRER🍫",
+    description: "Strain : Black Opal",
+    mediaUrls: [
+      "https://www.image2url.com/r2/default/videos/1792539487720-463775a8-0090-4eef-944f-3e5ad6d116ac.mov"
+    ],
+    options: [
+      { name: "1g", price: 40 }
     ]
   }
 ];
@@ -1127,9 +1267,12 @@ function renderProducts(){
     card.className = "product-card";
     const firstPrice = (product.options && product.options.length > 0) ? product.options[0].price : 0;
     
-    let mediaHtml = product.type === 'video' 
-      ? `<video class="product-image" src="${product.image}" autoplay loop muted playsinline webkit-playsinline></video>`
-      : `<img class="product-image" src="${product.image}" alt="${product.name}" loading="lazy">`;
+    let mainMedia = (product.mediaUrls && product.mediaUrls.length > 0) ? product.mediaUrls[0] : (product.image || DEFAULT_LOGO);
+    let isVid = mainMedia.match(/\.(mp4|webm|mov)/i);
+    
+    let mediaHtml = isVid 
+      ? `<video class="product-image" src="${mainMedia}" autoplay loop muted playsinline webkit-playsinline></video>`
+      : `<img class="product-image" src="${mainMedia}" alt="${product.name}" loading="lazy">`;
 
     card.innerHTML = `
       <div class="product-image-wrap">
@@ -1147,7 +1290,11 @@ function renderProducts(){
     `;
 
     card.onclick = (event) => {
-      if(event.target.closest(".add-button")){ addToCart(product, product.options[0]); return; }
+      if(event.target.closest(".add-button")){ 
+        let primaryOpt = (product.options && product.options.length > 0) ? product.options[0] : {name: "Standard", price: firstPrice};
+        addToCart(product, primaryOpt); 
+        return; 
+      }
       openProduct(product);
     };
     container.appendChild(card);
@@ -1166,7 +1313,12 @@ async function fetchProductsFromFirebase() {
       }
       PRODUCTS = [...INITIAL_PRODUCTS];
     } else {
-      PRODUCTS = productSnapshot.docs.map(doc => doc.data());
+      PRODUCTS = productSnapshot.docs.map(doc => {
+        let d = doc.data();
+        if(!d.mediaUrls && d.image) d.mediaUrls = [d.image];
+        if(!d.mediaUrls) d.mediaUrls = [DEFAULT_LOGO];
+        return d;
+      });
     }
     
     updateCategoriesList();
@@ -1180,7 +1332,7 @@ async function fetchProductsFromFirebase() {
 }
 fetchProductsFromFirebase();
 
-// Product Modal
+// Product Modal & Slider multi-vidéos
 const productOverlay = document.getElementById("productOverlay");
 const productSheet = document.getElementById("productSheet");
 
@@ -1188,19 +1340,38 @@ function openProduct(product){
   state.selectedProduct = product;
   state.selectedOption = 0;
   
-  const imgEl = document.getElementById("detailImage");
-  const vidEl = document.getElementById("detailVideo");
+  const sliderContainer = document.getElementById("detailMediaContainer");
+  const dotsContainer = document.getElementById("mediaDots");
+  sliderContainer.innerHTML = "";
+  dotsContainer.innerHTML = "";
   
-  if (product.type === 'video') {
-    imgEl.style.display = "none";
-    vidEl.style.display = "block";
-    vidEl.src = product.image;
-  } else {
-    vidEl.style.display = "none";
-    imgEl.style.display = "block";
-    imgEl.src = product.image;
-  }
+  let urls = product.mediaUrls && product.mediaUrls.length > 0 ? product.mediaUrls : [product.image || DEFAULT_LOGO];
   
+  urls.forEach((url, idx) => {
+    const slide = document.createElement("div");
+    slide.className = "media-slide-item";
+    let isVid = url.match(/\.(mp4|webm|mov)/i);
+    if(isVid){
+      slide.innerHTML = `<video class="product-detail-media" src="${url}" autoplay loop muted playsinline webkit-playsinline></video>`;
+    } else {
+      slide.innerHTML = `<img class="product-detail-media" src="${url}" alt="Media ${idx+1}">`;
+    }
+    sliderContainer.appendChild(slide);
+
+    const dot = document.createElement("div");
+    dot.className = "media-dot" + (idx === 0 ? " active" : "");
+    dotsContainer.appendChild(dot);
+  });
+
+  sliderContainer.onscroll = () => {
+    let slideWidth = sliderContainer.clientWidth;
+    let scrollLeft = sliderContainer.scrollLeft;
+    let activeIndex = Math.round(scrollLeft / slideWidth);
+    document.querySelectorAll(".media-dot").forEach((d, i) => {
+      d.classList.toggle("active", i === activeIndex);
+    });
+  };
+
   document.getElementById("detailTitle").textContent = product.name;
   document.getElementById("detailBadge").textContent = product.category;
   document.getElementById("detailDescription").textContent = product.description;
@@ -1227,7 +1398,7 @@ function renderPriceOptions(){
 function closeProduct(){
   productOverlay.classList.remove("open");
   productSheet.classList.remove("open");
-  document.getElementById("detailVideo").src = "";
+  document.getElementById("detailMediaContainer").innerHTML = "";
 }
 document.getElementById("closeProduct").onclick = closeProduct;
 productOverlay.onclick = closeProduct;
@@ -1236,8 +1407,11 @@ productOverlay.onclick = closeProduct;
 function addToCart(product, option){
   if (!option) return;
   const key = product.id+"::"+option.name;
+  let primaryMedia = (product.mediaUrls && product.mediaUrls.length > 0) ? product.mediaUrls[0] : (product.image || DEFAULT_LOGO);
+  let isVid = primaryMedia.match(/\.(mp4|webm|mov)/i);
+  
   if(state.cart[key]) state.cart[key].quantity++;
-  else state.cart[key] = { key, productId:product.id, name:product.name, category:product.category, option:option.name, price:option.price, image:product.image, quantity:1, type:product.type };
+  else state.cart[key] = { key, productId:product.id, name:product.name, category:product.category, option:option.name, price:option.price, image:primaryMedia, quantity:1, type: isVid ? 'video' : 'image' };
   updateCart();
   toast(`${product.name} ajouté ✓`);
 }
@@ -1340,7 +1514,7 @@ function buildOrderMessage(){
   return message;
 }
 
-document.getElementById("submitOrder").onclick = () => {
+document.getElementById("submitOrderTg").onclick = () => {
   if(cartCount()===0){ toast("Ton panier est vide"); return; }
   if(state.delivery==="delivery" && !document.getElementById("customerAddress").value.trim()){ toast("Indique ton adresse"); return; }
   const message = buildOrderMessage();
@@ -1348,7 +1522,17 @@ document.getElementById("submitOrder").onclick = () => {
   closeCheckout();
   if(tg) { try{ tg.openTelegramLink(telegramUrl); }catch(e){ window.open(telegramUrl,"_blank"); } }
   else { window.open(telegramUrl,"_blank"); }
-  toast("Commande préparée ✓");
+  toast("Commande Telegram préparée ✓");
+};
+
+document.getElementById("submitOrderIg").onclick = () => {
+  if(cartCount()===0){ toast("Ton panier est vide"); return; }
+  if(state.delivery==="delivery" && !document.getElementById("customerAddress").value.trim()){ toast("Indique ton adresse"); return; }
+  const message = buildOrderMessage();
+  const instagramUrl = "https://ig.me/m/farms422.st?text=" + encodeURIComponent(message);
+  closeCheckout();
+  window.open(instagramUrl, "_blank");
+  toast("Commande Instagram préparée ✓");
 };
 
 // =====================================================
@@ -1467,7 +1651,7 @@ window.prepareEditProduct = function(id) {
   document.getElementById("editPTitle").value = product.name;
   document.getElementById("editPCat").value = product.category;
   document.getElementById("editPDesc").value = product.description;
-  document.getElementById("editPUrl").value = product.image || "";
+  document.getElementById("editPUrl").value = product.mediaUrls ? product.mediaUrls.join(", ") : (product.image || "");
 
   renderOptionInputs(product.options);
 };
@@ -1524,7 +1708,7 @@ document.getElementById("saveProductBtn").onclick = async () => {
   const title = document.getElementById("editPTitle").value.trim();
   const category = document.getElementById("editPCat").value.trim();
   const description = document.getElementById("editPDesc").value.trim();
-  const mediaUrl = document.getElementById("editPUrl").value.trim();
+  const mediaInput = document.getElementById("editPUrl").value.trim();
 
   if(!title || !category) {
     toast("Veuillez remplir le titre et la catégorie !");
@@ -1552,29 +1736,24 @@ document.getElementById("saveProductBtn").onclick = async () => {
 
   try {
     let productId = editingProductId;
+    let mediaUrlsArray = [];
+    if(mediaInput) {
+      mediaUrlsArray = mediaInput.split(",").map(s => s.trim()).filter(Boolean);
+    }
+    
     let finalData = {
       name: title,
       category: category,
       description: description,
-      options: newOptions
+      options: newOptions,
+      mediaUrls: mediaUrlsArray.length > 0 ? mediaUrlsArray : [DEFAULT_LOGO],
+      image: mediaUrlsArray.length > 0 ? mediaUrlsArray[0] : DEFAULT_LOGO
     };
 
-    if(mediaUrl) {
-      finalData.image = mediaUrl;
-      finalData.type = mediaUrl.match(/\.(mp4|webm|mov)/i) ? 'video' : 'image';
-    } else if(!editingProductId) {
-      finalData.image = DEFAULT_LOGO;
-      finalData.type = 'image';
-    }
-
     if(editingProductId) {
-      const pIndex = PRODUCTS.findIndex(p => p.id === editingProductId);
-      if(!mediaUrl && pIndex !== -1) {
-        finalData.image = PRODUCTS[pIndex].image;
-        finalData.type = PRODUCTS[pIndex].type;
-      }
       finalData.id = editingProductId;
       await setDoc(doc(db, "products", editingProductId), finalData);
+      const pIndex = PRODUCTS.findIndex(p => p.id === editingProductId);
       if(pIndex !== -1) PRODUCTS[pIndex] = finalData;
       toast("Produit mis à jour ✓");
     } else {
