@@ -1187,9 +1187,9 @@ document.querySelectorAll(".social").forEach(btn => {
     const url = btn.dataset.url;
     if (!url) return;
     if (tg && tg.openLink) {
-      try { tg.openLink(url); } catch (err) { window.open(url, "_blank"); }
+      try { tg.openLink(url); } catch (err) { window.location.href = url; }
     } else {
-      window.open(url, "_blank");
+      window.location.href = url;
     }
   };
 });
@@ -1233,7 +1233,7 @@ function toast(message){
   const el = document.getElementById("toast");
   el.textContent = message;
   el.classList.add("show");
-  setTimeout(()=>el.classList.remove("show"), 1800);
+  setTimeout(()=>el.classList.remove("show"), 2500);
 }
 
 // Search & Render
@@ -1514,25 +1514,61 @@ function buildOrderMessage(){
   return message;
 }
 
+// CORRECTION ENVOI TELEGRAM
 document.getElementById("submitOrderTg").onclick = () => {
   if(cartCount()===0){ toast("Ton panier est vide"); return; }
   if(state.delivery==="delivery" && !document.getElementById("customerAddress").value.trim()){ toast("Indique ton adresse"); return; }
+  
   const message = buildOrderMessage();
   const telegramUrl = "https://t.me/farms422?text=" + encodeURIComponent(message);
+  
   closeCheckout();
-  if(tg) { try{ tg.openTelegramLink(telegramUrl); }catch(e){ window.open(telegramUrl,"_blank"); } }
-  else { window.open(telegramUrl,"_blank"); }
+  
+  if(tg && tg.openTelegramLink) { 
+    try{ 
+      tg.openTelegramLink(telegramUrl); 
+    } catch(e){ 
+      window.location.href = telegramUrl; 
+    } 
+  } else { 
+    window.location.href = telegramUrl; 
+  }
   toast("Commande Telegram préparée ✓");
 };
 
-document.getElementById("submitOrderIg").onclick = () => {
+// CORRECTION ENVOI INSTAGRAM (Copie dans le presse-papiers + Ouverture Directe)
+document.getElementById("submitOrderIg").onclick = async () => {
   if(cartCount()===0){ toast("Ton panier est vide"); return; }
   if(state.delivery==="delivery" && !document.getElementById("customerAddress").value.trim()){ toast("Indique ton adresse"); return; }
+  
   const message = buildOrderMessage();
-  const instagramUrl = "https://ig.me/m/farms422.st?text=" + encodeURIComponent(message);
+  const instagramUrl = "https://ig.me/m/farms422.st";
+
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(message);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = message;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+    }
+    toast("Commande copiée ! Colle-la sur Instagram 📋");
+  } catch (err) {
+    console.error("Erreur de copie Presse-papiers:", err);
+  }
+
   closeCheckout();
-  window.open(instagramUrl, "_blank");
-  toast("Commande Instagram préparée ✓");
+
+  setTimeout(() => {
+    if (tg && tg.openLink) {
+      try { tg.openLink(instagramUrl); } catch(e) { window.location.href = instagramUrl; }
+    } else {
+      window.location.href = instagramUrl;
+    }
+  }, 700);
 };
 
 // =====================================================
